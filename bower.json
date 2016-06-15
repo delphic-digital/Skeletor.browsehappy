@@ -1,0 +1,21 @@
+{
+  "name": "Skeletor.browsehappy",
+  "main": "Skeletor.browsehappy.js",
+  "homepage": "https://github.com/delphic-digital/Skeletor.browsehappy",
+  "authors": [
+    "Jeff <jmills@delphicdigital.com>"
+  ],
+  "description": "Show an info bar to prompt for updating an outdated browser",
+  "keywords": [
+    "delphic",
+    "skeletor"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

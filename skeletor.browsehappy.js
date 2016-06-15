@@ -3,13 +3,6 @@
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
 
-require.config({
-	paths: {
-		'jquery': '//code.jquery.com/jquery-3.0.0.min',
-		'skeletor.core': '../Skeletor.core/skeletor.core',
-	}
-})
-
 //If you open your website with #test-bu appended to the url, the bar will always show up. Example: http://browser-update.org/#test-bu. Make sure the page is properly reloaded by opening the url in an new browser tab.
 
 define(['jquery', 'skeletor.core'],function ($, Skeletor){

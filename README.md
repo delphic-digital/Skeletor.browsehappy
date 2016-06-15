@@ -1,1 +1,1 @@
-"# Skeletor.browsehappy" 
+# Skeletor.browsehappy

@@ -1,6 +1,6 @@
 {
-  "name": "Skeletor.browsehappy",
-  "main": "Skeletor.browsehappy.js",
+  "name": "skeletor.browsehappy",
+  "main": "skeletor.browsehappy.js",
   "homepage": "https://github.com/delphic-digital/Skeletor.browsehappy",
   "authors": [
     "Jeff <jmills@delphicdigital.com>"

@@ -1,5 +1,5 @@
 /**
- * @copyright   2010-2016, The Skeletor Project
+ * @copyright   2016, The Skeletor Project
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
 
@@ -11,7 +11,7 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 		this.options = $.extend({}, this.defaults, options);
 		this.$element = element || $(document);
 		this._init();
-		Skeletor.instantiatePlugin(this, 'BrowseHappy');
+		Skeletor.instantiatePlugin(this);
 	};
 
 	BrowseHappy.prototype = {
@@ -42,7 +42,7 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 		}
 	}
 
-	Skeletor.registerPlugin(BrowseHappy, 'BrowseHappy');
+	Skeletor.registerPlugin(BrowseHappy);
 
 	new BrowseHappy();
 

@@ -11,7 +11,7 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 		BrowseHappy.__super__.call(this, element, options, BrowseHappy.DEFAULTS);
 	}
 
-	BrowseHappy.VERSION = '0.0.1';
+	BrowseHappy.VERSION = '0.0.2';
 	BrowseHappy.DEFAULTS =  {
 		vs: {i:9,f:25,o:12.1,s:2,c:10}, // browser versions to notify
 		reminder: 24,                   // after how many hours should the message reappear
@@ -35,6 +35,10 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 		_init: function(element) {
 			window.$buoop = this.options;
 			require(['//browser-update.org/update.min.js'])
+		},
+		testBrowseHappy: function(){
+			window.location.href += "#test-bu";
+			location.reload();
 		}
 	});
 

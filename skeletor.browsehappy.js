@@ -42,5 +42,4 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 		}
 	});
 
-	new BrowseHappy()
 });

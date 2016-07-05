@@ -15,7 +15,10 @@
 				'skeletor.core': '../../skeletor.core/skeletor.core',
 			}
 		})
-		require(['skeletor.browsehappy'])
+		require(['skeletor.browsehappy'], function(){
+			new Skeletor.BrowseHappy($(document),{test: true})
+		})
+
 	</script>
 </body>
 </html>

@@ -3,42 +3,74 @@
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
 
-//If you open your website with #test-bu appended to the url, the bar will always show up. Example: http://browser-update.org/#test-bu. Make sure the page is properly reloaded by opening the url in an new browser tab.
+//https://github.com/ded/bowser/blob/master/src/bowser.js
+//https://github.com/sub2home/browser-detection/blob/master/src/browser-detection.js
 
 define(['jquery', 'skeletor.core'],function ($, Skeletor){
+
+	var UA            = navigator.userAgent,
+	    BROWSER_PARTS = UA.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [],
+	   	//BROWSER_PARTS = /(opera|chrome|safari|firefox|msie|trident)(?:.*version)?(?:[ \/])?([\w]+)/.exec(UA),
+	    OS_PARTS      = /(mac|win|linux|freebsd|mobile|iphone|ipod|ipad|android|blackberry|j2me|webtv)/.exec(UA),
+	    BROWSER       = '',
+	    VERSION       = '',
+	    OS            = '';
 
 	function BrowseHappy(element, options) {
 		BrowseHappy.__super__.call(this, element, options, BrowseHappy.DEFAULTS);
 	}
 
-	BrowseHappy.VERSION = '0.0.2';
+	BrowseHappy.VERSION = '0.3.0';
 	BrowseHappy.DEFAULTS =  {
-		vs: {i:9,f:25,o:12.1,s:2,c:10}, // browser versions to notify
-		reminder: 24,                   // after how many hours should the message reappear
-		                                // 0 = show all the time
-		reminderClosed: 150,            // if the user closes message it reappears after x hours
-		onshow: function(infos){},      // callback function after the bar has appeared
-		onclick: function(infos){},     // callback function if bar was clicked
-		onclose: function(infos){},     // callback function after the bar is closed
-		l: false,                       // set a language for the message, e.g. "en"
-		                                // overrides the default detection
-		test: false,                    // true = always show the bar (for testing)
-		text: "",                       // custom notification html text
-		                                // Optionally include up to two placeholders "%s" which will be replaced with the browser version and contents of the link tag. Example: "Your browser (%s) is old.  Please <a%s>update</a>"
-		text_xx: "",                    // custom notification text for language "xx"
-		                                // e.g. text_de for german and text_it for italian
-		newwindow: true,                // open link in new window/tab
-		url: "http://browsehappy.com/"
+		min: {
+			ie:9, // Do you need to know why?
+			firefox: 5, // v5 was beginning of rapid release cycle
+			opera: 15, // went webkit at 15
+			safari: 6,
+			chrome: 40
+		}
 	}
 
 	Skeletor.Plugin.create(BrowseHappy, {
 		_init: function(element) {
-			window.$buoop = this.options;
-			require(['//browser-update.org/update.min.js'])
+			//console.log(BROWSER_PARTS)
+			this._getUserAgent();
+			console.log('BROWSER: '+BROWSER);
+			console.log('VERSION: '+VERSION);
+			//console.log(this._isSupported[BROWSER]());
+
 		},
-		testBrowseHappy: function(){
-			window.location.href += "#test-bu";
-			location.reload();
+		_getUserAgent: function(){
+
+			//Check for ie 11 (trident UA)
+			if(/trident/i.test(BROWSER_PARTS[1])){
+				var tem =  /\brv[ :]+(\d+)/g.exec(UA) || [];
+				BROWSER = 'IE';
+				VERSION = tem[1] || '';
+			}else if (BROWSER_PARTS[1] === 'Chrome'){
+				var tem= UA.match(/\b(OPR|Edge)\/(\d+)/);
+				if(tem!= null){
+					BROWSER = tem[1].replace('OPR', 'Opera');
+					VERSION = tem[2];
+				}else{
+					BROWSER = BROWSER_PARTS[1];
+        	VERSION = BROWSER_PARTS[2];
+				}
+			}else {
+				BROWSER = BROWSER_PARTS[1];
+        VERSION = BROWSER_PARTS[2];
+			}
+		},
+		_isSupported: {
+			'ie': function(){
+				return VERSION > 9
+			},
+			'chrome': function(){
+				return VERSION > 40
+			}
+		},
+		test: function(){
+			console.log('test browse happy')
 		}
 	});
 

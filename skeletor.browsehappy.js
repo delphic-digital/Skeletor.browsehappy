@@ -3,19 +3,15 @@
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
 
-//https://github.com/ded/bowser/blob/master/src/bowser.js
-//https://github.com/sub2home/browser-detection/blob/master/src/browser-detection.js
-//http://stackoverflow.com/questions/5916900/how-can-you-detect-the-version-of-a-browser#answer-38080051
+//http://faisalman.github.io/ua-parser-js/
 
-define(['jquery', 'skeletor.core'],function ($, Skeletor){
+define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAParser){
 
-	var UA            = navigator.userAgent,
-	    BROWSER_PARTS = UA.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [],
-	   	//BROWSER_PARTS = /(opera|chrome|safari|firefox|msie|trident)(?:.*version)?(?:[ \/])?([\w]+)/.exec(UA),
-	    //OS_PARTS      = /(mac|win|linux|freebsd|mobile|iphone|ipod|ipad|android|blackberry|j2me|webtv)/.exec(UA),
-	    BROWSER       = '',
-	    VERSION       = '',
-	    OS            = '';
+	var UA                 = new UAParser().getResult(),
+	    BROWSER            = UA.browser.name,
+	    BROWSER_VERSION    = UA.browser.version,
+	    OS                 = UA.os.name,
+	    OS_VERSION         = UA.os.version;
 
 	function BrowseHappy(element, options) {
 		BrowseHappy.__super__.call(this, element, options, BrowseHappy.DEFAULTS);
@@ -34,36 +30,12 @@ define(['jquery', 'skeletor.core'],function ($, Skeletor){
 
 	Skeletor.Plugin.create(BrowseHappy, {
 		_init: function(element) {
-			//console.log(BROWSER_PARTS)
-			this._getUserAgent();
-			var isSupported = this._isSupported[BROWSER.toLowerCase()](this.options.min);
-			console.log(BROWSER, VERSION, isSupported);
+			//console.log(OS_VERSION)
 
-			if(!isSupported){
+			/*if(!isSupported){
 				this._bar.init();
 				this._bar.show();
-			}
-		},
-		_getUserAgent: function(){
-
-			//Check for ie 11 (trident UA)
-			if(/trident/i.test(BROWSER_PARTS[1])){
-				var tem =  /\brv[ :]+(\d+)/g.exec(UA) || [];
-				BROWSER = 'IE';
-				VERSION = tem[1] || '';
-			}else if (BROWSER_PARTS[1] === 'Chrome'){
-				var tem= UA.match(/\b(OPR|Edge)\/(\d+)/);
-				if(tem!= null){
-					BROWSER = tem[1].replace('OPR', 'Opera');
-					VERSION = tem[2];
-				}else{
-					BROWSER = BROWSER_PARTS[1];
-        	VERSION = BROWSER_PARTS[2];
-				}
-			}else {
-				BROWSER = BROWSER_PARTS[1];
-        VERSION = BROWSER_PARTS[2];
-			}
+			}*/
 		},
 		_isSupported: {
 			'ie': function(min){

@@ -11,12 +11,13 @@
 		require.config({
 			paths: {
 				'jquery': '//code.jquery.com/jquery-3.0.0.min',
+				'ua-parser-js': 'bower_components/ua-parser-js/src/ua-parser',
 				//'skeletor.core': '//rawgit.com/delphic-digital/Skeletor.core/master/skeletor.core',
 				'skeletor.core': '../../skeletor.core/skeletor.core',
 			}
 		})
 		require(['skeletor.browsehappy'], function(){
-		window.bh = new Skeletor.BrowseHappy($(document),{test: true})
+			new Skeletor.BrowseHappy($(document),{test: true})
 		})
 
 	</script>

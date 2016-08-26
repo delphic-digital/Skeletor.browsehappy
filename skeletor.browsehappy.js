@@ -4,20 +4,28 @@
  */
 
 //http://faisalman.github.io/ua-parser-js/
+//https://support.microsoft.com/en-us/help/17454/lifecycle-support-policy-faq-internet-explorer
 
 define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAParser){
 
-	var UA                 = new UAParser().getResult(),
-	    BROWSER            = UA.browser.name,
-	    BROWSER_VERSION    = UA.browser.version,
-	    OS                 = UA.os.name,
-	    OS_VERSION         = UA.os.version;
+	var UA                 = new UAParser();
+
+	//Internet Explorer 8 on Windows Vista
+//	UA.setUA('Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/4.0; SLCC1; .NET CLR 2.0.50727; InfoPath.2; Tablet PC 2.0; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)');
+//Internet Explorer 8 on Windows 7
+	UA.setUA('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; HPNTDF; .NET4.0C)');
+	UA = UA.getResult()
+
+	var BROWSER            = UA.browser.name.toLowerCase(),
+	    BROWSER_VERSION    = UA.browser.major,
+	    OS                 = UA.os.name.toLowerCase(),
+	    OS_VERSION         = UA.os.version.toLowerCase();
 
 	function BrowseHappy(element, options) {
 		BrowseHappy.__super__.call(this, element, options, BrowseHappy.DEFAULTS);
 	}
 
-	BrowseHappy.VERSION = '0.3.0';
+	BrowseHappy.VERSION = '0.4.0';
 	BrowseHappy.DEFAULTS =  {
 		min: {
 			ie: 9, // Do you need to know why?
@@ -30,19 +38,47 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 
 	Skeletor.Plugin.create(BrowseHappy, {
 		_init: function(element) {
-			//console.log(OS_VERSION)
+			console.log(UA)
 
-			/*if(!isSupported){
+			try{
+				var isSupported = this._isSupported[BROWSER](this.options.min);
+			}catch(e){
+				console.error("Your browser isn't supported by this site")
+			}
+
+			console.log(isSupported);
+
+			if(!isSupported){
 				this._bar.init();
-				this._bar.show();
-			}*/
+			}
 		},
 		_isSupported: {
 			'ie': function(min){
-				return VERSION > min.ie
+
+				//Check for old OS first, latest releases of IE can't be installed on old windows
+				if(/(98|2000|vista|xp)/.exec(OS_VERSION)){
+					console.error("You're on an old Operating System.");
+					//show a different message?
+					return true;
+				}
+
+				return BROWSER_VERSION  > min.ie
 			},
+
+			'edge': function(min){
+				return BROWSER_VERSION  > min.ie
+			},
+
 			'chrome': function(min){
-				return VERSION > min.chrome
+				return BROWSER_VERSION  > min.chrome
+			},
+
+			'safari': function(min){
+				return BROWSER_VERSION  > min.safari
+			},
+
+			'opera': function(min){
+				return BROWSER_VERSION  > min.opera
 			}
 		},
 
@@ -80,11 +116,13 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 							'<span style=" position: absolute; font-family: Verdana; color:red; font-size: 1.5em; font-weight: bold">',
 								'&nbsp;&nbsp;!',
 							'</span>',
-							'&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;Your browser ' + BROWSER +' '+VERSION  + ' is out of date. ',
+							'&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;Your browser ' + BROWSER +' '+BROWSER_VERSION  + ' is out of date. ',
 							'It has known security flaws and may not display all features of this and other websites.',
 						'</div>'].join(''))
 					.css(css)
 				)
+
+				this.show();
 			},
 			show: function(){
 				console.log('show bar')

@@ -11,8 +11,8 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 	var UA                 = new UAParser();
 
 	//Internet Explorer 8 on Windows Vista
-//	UA.setUA('Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/4.0; SLCC1; .NET CLR 2.0.50727; InfoPath.2; Tablet PC 2.0; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)');
-//Internet Explorer 8 on Windows 7
+	//UA.setUA('Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/4.0; SLCC1; .NET CLR 2.0.50727; InfoPath.2; Tablet PC 2.0; .NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET CLR 3.0.30729)');
+	//Internet Explorer 8 on Windows 7
 	//UA.setUA('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; HPNTDF; .NET4.0C)');
 	UA = UA.getResult()
 
@@ -38,7 +38,7 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 
 	Skeletor.Plugin.create(BrowseHappy, {
 		_init: function(element) {
-			console.log(UA)
+			//console.log(UA)
 
 			try{
 				var isSupported = this._isSupported[BROWSER](this.options.min);
@@ -46,10 +46,10 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 				console.error("Your browser isn't supported by this site")
 			}
 
-			console.log(isSupported);
+			//console.log(isSupported);
 
 			if(!isSupported){
-				this._bar.init();
+				this._bar.show();
 			}
 		},
 		_isSupported: {
@@ -83,31 +83,34 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 		},
 
 		_bar: {
-			init: function(){
-				var css = {
-					//display: "none",
-					position: "absolute",
-					height: "19px",
-					fontSize: "14px",
-					lineHeight: "1em",
-					fontFamily: "Arial, sans-serif",
-					color: "black",
-					padding: "10px 0",
-					top: "-40px",
-					left: "0",
-					right: "0",
-					backgroundColor: "#FDF2AB",
-					borderBottom: "1px solid #A29330",
-					width: "100%",
-					textAlign: "left",
-					cursor: "pointer",
-					zoom: "1",
-					zIndex: 9999,
-					"-webkit-box-sizing": "content-box",
-					"-moz-box-sizing": "content-box",
-					"box-sizing": "content-box",
-					overflow: "hidden"
-				}
+			barCSS: {
+				position: "absolute",
+				height: "19px",
+				fontSize: "14px",
+				lineHeight: "1em",
+				fontFamily: "Arial, sans-serif",
+				color: "black",
+				padding: "10px 0",
+				top: "-40px",
+				left: "0",
+				right: "0",
+				backgroundColor: "#FDF2AB",
+				borderBottom: "1px solid #A29330",
+				width: "100%",
+				textAlign: "left",
+				cursor: "pointer",
+				zoom: "1",
+				zIndex: 9999,
+				"-webkit-box-sizing": "content-box",
+				"-moz-box-sizing": "content-box",
+				"box-sizing": "content-box",
+				overflow: "hidden"
+			},
+			HTMLTagCSS: {
+				position: 'relative',
+				top: '40px'
+			},
+			show: function(){
 
 				$('body').append(
 					$('<div>')
@@ -119,24 +122,16 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 							'&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;Your browser ' + BROWSER +' '+BROWSER_VERSION  + ' is out of date. ',
 							'It has known security flaws and may not display all features of this and other websites.',
 						'</div>'].join(''))
-					.css(css)
-				)
+					.css(this.barCSS))
 
-				this.show();
-			},
-			show: function(){
-				console.log('show bar')
-				$('body').css({
-					position: 'relative',
-					top: '40px'
-				})
-			},
+				$('html').css(this.HTMLTagCSS)
+			}
 		},
-		displayBar: function(){
+		_displayBar: function(){
 			this._bar.show();
 		},
 		test: function(){
-			console.log('test browse happy')
+			this._displayBar();
 		}
 	});
 

@@ -28,7 +28,7 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 	BrowseHappy.VERSION = '0.4.0';
 	BrowseHappy.DEFAULTS =  {
 		min: {
-			ie: 9, // Do you need to know why?
+			ie: 9, // Skeletor supports IE9+ only
 			firefox: 5, // v5 was beginning of rapid release cycle
 			opera: 15, // went webkit at 15
 			safari: 6,

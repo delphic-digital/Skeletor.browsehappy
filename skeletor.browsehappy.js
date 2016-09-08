@@ -111,9 +111,10 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 				top: '40px'
 			},
 			show: function(){
+				var self = this;
 
 				$('body').append(
-					$('<div>')
+					$('<div class="skeletor-bh-bar">')
 					.html([
 						'<div style="position: relative; line-height: 1.5em">',
 							'<span style=" position: absolute; font-family: Verdana; color:red; font-size: 1.5em; font-weight: bold">',
@@ -121,14 +122,23 @@ define(['jquery', 'skeletor.core', 'ua-parser-js'],function ($, Skeletor, UAPars
 							'</span>',
 							'&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;Your browser ' + BROWSER +' '+BROWSER_VERSION  + ' is out of date. ',
 							'It has known security flaws and may not display all features of this and other websites.',
+							'<span style="position:absolute; right:0; padding-right: 20px;">&#x2716</span>',
 						'</div>'].join(''))
 					.css(this.barCSS))
+					.click(function(){self.hide()})
 
 				$('html').css(this.HTMLTagCSS)
-			}
+			},
+			hide: function(){
+				$('.skeletor-bh-bar').remove();
+				$('html').css({position: '', top: ''})
+			},
 		},
 		_displayBar: function(){
 			this._bar.show();
+		},
+		_hideBar: function(){
+			this._bar.hide();
 		},
 		test: function(){
 			this._displayBar();
